@@ -1,0 +1,23 @@
+mappings:
+  book:
+    sources:
+      - ['data.json~jsonpath', '$.data']
+    po:
+      - [a, schema:Book]
+      - [schema:name, $(attributes.name)]
+      - [schema:url, $(attributes.url)]
+      - p: schema:offers
+        o:
+          mapping: offer
+          condition:
+            function: equal
+            parameters:
+              - [str1, "$(relationships.offers.data[0].id)"]
+              - [str2, $(id)]
+
+  offer:
+    sources:
+      - ['data.json~jsonpath', '$.included[*]']
+    po:
+      - [a, schema:Offer]
+      - [schema:price, $(attributes.price)]

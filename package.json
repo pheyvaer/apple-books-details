@@ -1,0 +1,20 @@
+{
+  "name": "apple-books-details",
+  "version": "0.0.1",
+  "description": "Get the details of a book in the Apple Book Store",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "node node_modules/@rmlio/rmlmapper-java-wrapper/lib/download-latest-rmlmapper.js && node node_modules/@rmlio/yarrrml-parser/bin/parser.js -i mapping.yarrrml -o mapping.rml.ttl"
+  },
+  "author": "Pieter Heyvaert (https://pieterheyvaert.com)",
+  "license": "MIT",
+  "dependencies": {
+    "@rmlio/rmlmapper-java-wrapper": "^0.1.1",
+    "@rmlio/yarrrml-parser": "^0.3.11",
+    "cheerio": "^1.0.0-rc.3",
+    "commander": "^4.0.1",
+    "fs-extra": "^8.1.0",
+    "jsonld": "^2.0.1"
+  }
+}
