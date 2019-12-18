@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "postinstall": "node node_modules/@rmlio/rmlmapper-java-wrapper/lib/download-latest-rmlmapper.js && node node_modules/@rmlio/yarrrml-parser/bin/parser.js -i mapping.yarrrml -o mapping.rml.ttl"
+    "postinstall": "node node_modules/@rmlio/rmlmapper-java-wrapper/lib/download-latest-rmlmapper.js && node node_modules/@rmlio/yarrrml-parser/bin/parser.js -i apple-books.yarrrml -o apple-books.rml.ttl"
   },
   "author": "Pieter Heyvaert (https://pieterheyvaert.com)",
   "license": "MIT",

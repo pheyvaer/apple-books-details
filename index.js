@@ -8,6 +8,32 @@ const rmlmapperPath = './rmlmapper.jar';
 const tempFolderPath = './tmp';
 
 async function getBookDetails(url) {
+  const html = await getHTML(url);
+  const $html = cheerio.load(html);
+  const json = $html('#shoebox-ember-data-store').html();
+  //console.log(json);
+
+  const wrapper = new RMLMapperWrapper(rmlmapperPath, tempFolderPath, true);
+  const rml = fs.readFileSync('./apple-books.rml.ttl', 'utf-8');
+  const sources = {
+    'data.json': json
+  };
+
+  const result = await wrapper.execute(rml, {sources, generateMetadata: false, serialization: 'jsonld'});
+  const framed = await jsonld.frame(JSON.parse(result.output), {
+    "@context": "http://schema.org/",
+    "@type": "Book",
+    "offers": {
+      "@type": "Offer"
+    }
+  });
+
+  fs.remove(tempFolderPath);
+
+  return framed;
+}
+
+function getHTML(url) {
   return new Promise(((resolve, reject) => {
     https.get(url, (res) => {
       const {statusCode} = res;
@@ -30,31 +56,10 @@ async function getBookDetails(url) {
       });
 
       res.on('end', async () => {
-        const $html = cheerio.load(html);
-        const json = $html('#shoebox-ember-data-store').html();
-        //console.log(json);
-
-        const wrapper = new RMLMapperWrapper(rmlmapperPath, tempFolderPath, true);
-        const rml = fs.readFileSync('./mapping.rml.ttl', 'utf-8');
-        const sources = {
-          'data.json': json
-        };
-
-        const result = await wrapper.execute(rml, {sources, generateMetadata: false, serialization: 'jsonld'});
-        const framed = await jsonld.frame(JSON.parse(result.output), {
-          "@context": "http://schema.org/",
-          "@type": "Book",
-          "offers": {
-            "@type": "Offer"
-          }
-        });
-
-        resolve(framed);
-        fs.remove(tempFolderPath);
+        resolve(html);
       });
     }).on('error', (e) => {
       reject(e);
-      fs.remove(tempFolderPath);
     });
   }));
 }
