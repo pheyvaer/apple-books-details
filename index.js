@@ -9,6 +9,17 @@ const tempFolderPath = './tmp';
 
 async function getBookDetails(url) {
   const html = await getHTML(url);
+
+  if (url.indexOf('kobo.com') !== -1) {
+
+  } else if (url.indexOf('apple.com') !== -1) {
+    return await getAppleDetails(html);
+  } else {
+    throw new Error('Book provider is not supported.');
+  }
+}
+
+async function getAppleDetails(html) {
   const $html = cheerio.load(html);
   const json = $html('#shoebox-ember-data-store').html();
   //console.log(json);

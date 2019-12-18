@@ -1,0 +1,18 @@
+mappings:
+  book:
+    sources:
+      - ['data.html~css', 'body']
+    po:
+      - [a, schema:Book]
+      - [schema:name, $(span.title.product-field)]
+      - [schema:url, $(attributes.url)]
+      - p: schema:offers
+        o:
+          mapping: offer
+
+  offer:
+    sources:
+      - ['data.html~css', 'body']
+    po:
+      - [a, schema:Offer]
+      - [schema:price, $(.active-price span.price)]
